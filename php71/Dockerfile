@@ -14,6 +14,7 @@ RUN apt-get update && \
     curl \
     git \
     zip \
+    ssh \
     unzip && \
     rm -rf /var/lib/apt/lists/*
 

@@ -13,6 +13,10 @@ Docker images to be used for CI Okulistik php projects.
     ```
 
 ## Usage 
+- Npm Install
+    ```
+    docker run -v $(PWD):/app okulistik/builder-php71 npm install
+    ```
 - Composer Install
     ```
     docker run -v $(PWD):/app okulistik/builder-php71 composer install

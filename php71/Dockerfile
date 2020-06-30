@@ -3,6 +3,10 @@ FROM php:7.1.1
 # disable interactive functions
 ENV DEBIAN_FRONTEND noninteractive
 
+RUN curl -L https://deb.nodesource.com/setup_12.x -o nodesetup && \
+    chmod a+x nodesetup && \
+    ./nodesetup
+
 RUN apt-get update && \
     apt-get -y --no-install-recommends install \
     libmcrypt-dev \
@@ -15,9 +19,9 @@ RUN apt-get update && \
     git \
     zip \
     ssh \
+    nodejs \
     unzip && \
     rm -rf /var/lib/apt/lists/*
-
 RUN docker-php-ext-install \
     mbstring \
     mcrypt \
@@ -61,6 +65,7 @@ RUN mkdir -p /tools/jakub-onderka/php-parallel-lint && \
     cd /tools/jakub-onderka/php-parallel-lint && \
     composer require --dev jakub-onderka/php-parallel-lint && \
     cd -
+
 
 # Unset COMPOSER_BIN_DIR
 ENV COMPOSER_BIN_DIR=""

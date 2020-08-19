@@ -17,11 +17,15 @@ Docker images to be used for CI Okulistik php projects.
     ```
     docker run -v $(PWD):/app okulistik/builder-php71 npm install
     ```
+- Nightwatch
+    ```
+    docker run -v $(PWD):/app okulistik/builder-php71 npm run e2e
+    ```
 - Composer Install
     ```
     docker run -v $(PWD):/app okulistik/builder-php71 composer install
     ```
-- Security Cehcker
+- Security Checker
     ```
     docker run -v $(PWD):/app okulistik/builder-php71 security-checker security:check /app/composer.lock
     ```    

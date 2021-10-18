@@ -19,9 +19,13 @@ RUN apt-get update && \
     git \
     zip \
     ssh \
-    nodejs \
-    unzip && \
+    unzip
+RUN apt-get install -y --force-yes nodejs
+RUN apt-get -y install \
+    default-jre && \
     rm -rf /var/lib/apt/lists/*
+
+# install docker php extension
 RUN docker-php-ext-install \
     mbstring \
     mcrypt \
@@ -32,6 +36,7 @@ RUN docker-php-ext-install \
     soap \
     gd \
     sockets
+#RUN lsb_release -a && python --version && java -version && node --version
 
 # Install PHP Code Sniffer
 RUN curl -L https://squizlabs.github.io/PHP_CodeSniffer/phpcs.phar -o phpcs && \
@@ -41,40 +46,43 @@ RUN curl -L https://squizlabs.github.io/PHP_CodeSniffer/phpcs.phar -o phpcs && \
     mv phpcs /usr/local/bin/phpcs && \
     mv phpcbf /usr/local/bin/phpcbf
 
-# Install PHP Security Checker
-RUN curl -L http://get.sensiolabs.org/security-checker.phar -o security-checker.phar && \
-    chmod +x security-checker.phar && \
-    mv security-checker.phar /usr/local/bin/security-checker
 
 # Install Composer
 RUN curl -sS https://getcomposer.org/installer -o composer-setup.php && \
-    php composer-setup.php --install-dir=/usr/local/bin --filename=composer && \
-    composer config -g repo.packagist composer https://packagist.phpcomposer.com
+    php composer-setup.php --install-dir=/usr/local/bin --filename=composer
 
 # Set global bin-dir for composer packages
 ENV COMPOSER_BIN_DIR="/usr/local/bin"
-
 # Install PHP-Var-Dump-Check
-RUN mkdir -p /tools/jakub-onderka/php-var-dump-check && \
-    cd /tools/jakub-onderka/php-var-dump-check && \
-    composer require --dev jakub-onderka/php-var-dump-check && \
+RUN mkdir -p /tools/php-parallel-lint/php-var-dump-check && \
+    cd /tools/php-parallel-lint/php-var-dump-check && \
+    composer require --dev php-parallel-lint/php-var-dump-check && \
     cd -
 
 # Install PHP-Parallel-Lint
-RUN mkdir -p /tools/jakub-onderka/php-parallel-lint && \
-    cd /tools/jakub-onderka/php-parallel-lint && \
-    composer require --dev jakub-onderka/php-parallel-lint && \
+RUN mkdir -p /tools/php-parallel-lint/php-parallel-lint && \
+    cd /tools/php-parallel-lint/php-parallel-lint && \
+    composer require --dev php-parallel-lint/php-parallel-lint && \
     cd -
 
 # Unset COMPOSER_BIN_DIR
 ENV COMPOSER_BIN_DIR=""
+RUN curl "https://s3.amazonaws.com/aws-cli/awscli-bundle-1.16.312.zip" -o "awscli-bundle-1.16.312.zip" && \
+    unzip awscli-bundle-1.16.312.zip
+RUN ./awscli-bundle/install -i /usr/local/aws -b /usr/local/bin/aws
 
-RUN curl "https://s3.amazonaws.com/aws-cli/awscli-bundle.zip" -o "awscli-bundle.zip" && \
-    unzip awscli-bundle.zip && \
-    ./awscli-bundle/install -i /usr/local/aws -b /usr/local/bin/aws
+RUN curl -L https://github.com/yui/yuicompressor/releases/download/v2.4.8/yuicompressor-2.4.8.jar -o /tools/yuicompressor-2.4.8.jar
+COPY minify.sh /tools/minify
+RUN chmod a+x /tools/minify
 
-# E2E test tool, chromedriver
-RUN npm i -g nightwatch@1.3.7
+RUN curl -L https://github.com/akamai/cli/releases/download/1.3.0/akamai-1.3.0-linuxamd64 -o akamai && \
+    chmod +x akamai && \
+    mv  akamai /usr/local/bin/akamai
+
+RUN curl -L https://github.com/fabpot/local-php-security-checker/releases/download/v1.2.0/local-php-security-checker_1.2.0_linux_amd64 -o local-php-security-checker && \
+    chmod +x local-php-security-checker && \
+    mv local-php-security-checker /usr/local/bin/local-php-security-checker
+
 
 WORKDIR /app
 # Unset the entry point

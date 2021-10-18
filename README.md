@@ -17,18 +17,10 @@ Docker images to be used for CI Okulistik php projects.
     ```
     docker run -v $(PWD):/app okulistik/builder-php71 npm install
     ```
-- Nightwatch
-    ```
-    docker run -v $(PWD):/app okulistik/builder-php71 npm run e2e
-    ```
 - Composer Install
     ```
     docker run -v $(PWD):/app okulistik/builder-php71 composer install
     ```
-- Security Checker
-    ```
-    docker run -v $(PWD):/app okulistik/builder-php71 security-checker security:check /app/composer.lock
-    ```    
 - Vardump Checker    
     ```
     docker run -v $(PWD):/app okulistik/builder-php71 var-dump-check /app/src
@@ -40,6 +32,18 @@ Docker images to be used for CI Okulistik php projects.
 - Code Sniffer
     ```
     docker run -v $(PWD):/app okulistik/builder-php71 phpcs /app/src
+    ```
+- Aws
+    ```
+    docker run -v $(PWD):/app okulistik/builder-php71 aws
+    ```
+- Akamai Cdn
+    ```
+    docker run -v $(PWD):/app okulistik/builder-php71 akami
+    ```
+- Minify
+    ```
+    docker run -v $(PWD):/app okulistik/builder-php71 /tools/minify minifylist
     ```
 
 ## Credits

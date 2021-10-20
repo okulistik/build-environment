@@ -75,14 +75,18 @@ RUN curl -L https://github.com/yui/yuicompressor/releases/download/v2.4.8/yuicom
 COPY minify.sh /tools/minify
 RUN chmod a+x /tools/minify
 
-RUN curl -L https://github.com/akamai/cli/releases/download/1.3.0/akamai-1.3.0-linuxamd64 -o akamai && \
+RUN curl -L https://github.com/akamai/cli/releases/download/1.2.1/akamai-1.2.1-linuxamd64 -o akamai && \
     chmod +x akamai && \
-    mv  akamai /usr/local/bin/akamai
+    mv  akamai /usr/local/bin/akamai && akamai install property
 
 RUN curl -L https://github.com/fabpot/local-php-security-checker/releases/download/v1.2.0/local-php-security-checker_1.2.0_linux_amd64 -o local-php-security-checker && \
     chmod +x local-php-security-checker && \
     mv local-php-security-checker /usr/local/bin/local-php-security-checker
 
+
+RUN curl -L https://github.com/akamai/cli-purge/releases/download/1.0.1/akamai-purge-1.0.1-linuxamd64 -o akamai-purge && \
+    chmod +x akamai-purge && \
+    mv  akamai-purge /usr/local/bin/akamai-purge
 
 WORKDIR /app
 # Unset the entry point

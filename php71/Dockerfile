@@ -88,6 +88,7 @@ RUN curl -L https://github.com/akamai/cli-purge/releases/download/1.0.1/akamai-p
     chmod +x akamai-purge && \
     mv  akamai-purge /usr/local/bin/akamai-purge
 
+RUN docker-php-ext-install bcmath
 WORKDIR /app
 # Unset the entry point
 ENTRYPOINT []

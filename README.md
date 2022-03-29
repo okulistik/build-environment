@@ -12,6 +12,14 @@ Docker images to be used for CI Okulistik php projects.
     docker build -t okulistik/builder-php74 .
     ```
 
+## Push
+    ```
+    docker build -t okulistik/builder-php71:2.1 .
+    ```
+    ```
+    docker push okulistik/builder-php71:2.1
+    ```
+
 ## Usage 
 - Npm Install
     ```
